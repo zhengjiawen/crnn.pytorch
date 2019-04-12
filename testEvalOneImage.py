@@ -47,7 +47,7 @@ with open(gt_path+'res_'+imgName+'.txt') as f:
         maxY = max(pos[:,1])
         if debug:
             print ("pos is :" + str(pos))
-        wordImg = img[minX:maxX+1, minY:maxY+1]
+        wordImg = img[minX:maxX+1, minY:maxY+1,:]
         if len(img.shape) == 3:
             wordImg = cv.cvtColor(wordImg, cv.COLOR_BGR2RGB)
         image = Image.fromarray(wordImg).convert('L')
