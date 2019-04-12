@@ -9,7 +9,7 @@ import numpy as np
 
 import models.crnn as crnn
 
-
+debug = False
 model_path = './data/crnn.pth'
 gt_path = './data/res/'
 img_path = '/data/home/zjw/pythonFile/masktextspotter.caffe2/lib/datasets/data/icdar2019/test_images/'
@@ -31,8 +31,9 @@ model.eval()
 imgPath = 'X00016469670.jpg'
 imgName = imgPath.strip().split('.')[0]
 img = cv.imread(img_path+imgPath)
-print ("img shape: "+str(img.shape))
-print (len(img.shape))
+if debug:
+    print ("img shape: "+str(img.shape))
+    print (len(img.shape))
 
 with open(gt_path+'res_'+imgName+'.txt') as f:
     lines = f.readlines()
@@ -44,9 +45,14 @@ with open(gt_path+'res_'+imgName+'.txt') as f:
         minY = min(pos[:,1])
         maxX = max(pos[:,0])
         maxY = max(pos[:,1])
-        print ("pos is :" + str(pos))
+        if debug:
+            print ("pos is :" + str(pos))
         wordImg = img[minX:maxX+1, minY:maxY+1]
-        image = Image.fromarray(cv.cvtColor(wordImg, cv.COLOR_BGR2RGB)).convert('L')
+        if len(img.shape) == 3:
+            wordImg = cv.cvtColor(wordImg, cv.COLOR_BGR2RGB)
+        image = Image.fromarray(wordImg).convert('L')
+
+
         image = transformer(image)
         if torch.cuda.is_available():
             image = image.cuda()
