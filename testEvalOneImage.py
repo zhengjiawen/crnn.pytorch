@@ -42,7 +42,7 @@ with open(gt_path+'res_'+imgName+'.txt') as f:
         minY = min(pos[:,1])
         maxX = max(pos[:,0])
         maxY = max(pos[:,1])
-
+        print ("pos is :" + str(pos))
         wordImg = img[minX:maxX+1, minY:maxY+1]
         image = Image.fromarray(cv.cvtColor(wordImg, cv.COLOR_BGR2RGB)).convert('L')
         image = transformer(image)
