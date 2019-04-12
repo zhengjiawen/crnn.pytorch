@@ -31,6 +31,8 @@ model.eval()
 imgPath = 'X00016469670.jpg'
 imgName = imgPath.strip().split('.')[0]
 img = cv.imread(img_path+imgPath)
+print ("img shape: "+str(img.shape))
+print (len(img.shape))
 
 with open(gt_path+'res_'+imgName+'.txt') as f:
     lines = f.readlines()
