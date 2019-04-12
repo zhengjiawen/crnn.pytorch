@@ -22,7 +22,7 @@ converter = utils.strLabelConverter(alphabet)
 
 transformer = dataset.resizeNormalize((100, 32))
 image = cv.imread(img_path)
-image = Image.fromarray(cv.cvtColor(image, cv.COLOR_BGR2RGB))
+image = Image.fromarray(cv.cvtColor(image, cv.COLOR_BGR2RGB)).convert('L')
 image = transformer(image)
 if torch.cuda.is_available():
     image = image.cuda()
