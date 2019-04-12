@@ -36,7 +36,7 @@ with open(gt_path+'res_'+imgName+'.txt') as f:
     lines = f.readlines()
     for line in lines:
         pos = line.split(',')
-        pos = np.array(pos, np.int32)
+        pos = np.array(pos, dtype=np.int)
         pos = pos.reshape((-1,2))
         minX = min(pos[:,0])
         minY = min(pos[:,1])
