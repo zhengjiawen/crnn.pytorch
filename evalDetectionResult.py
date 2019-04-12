@@ -3,6 +3,7 @@ from torch.autograd import Variable
 import utils
 import dataset
 from PIL import Image
+import cv2 as cv
 
 import models.crnn as crnn
 
@@ -20,7 +21,8 @@ model.load_state_dict(torch.load(model_path))
 converter = utils.strLabelConverter(alphabet)
 
 transformer = dataset.resizeNormalize((100, 32))
-image = Image.open(img_path).convert('L')
+image = cv.imread(img_path)
+image = Image.fromarray(cv.cvtColor(image, cv.COLOR_BGR2RGB))
 image = transformer(image)
 if torch.cuda.is_available():
     image = image.cuda()
