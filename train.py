@@ -93,6 +93,9 @@ train_loader = torch.utils.data.DataLoader(
     collate_fn=dataset.alignCollate(imgH=opt.imgH, imgW=opt.imgW, keep_ratio=opt.keep_ratio))
 # test_dataset = dataset.lmdbDataset(
 #     root=opt.valRoot, transform=dataset.resizeNormalize((100, 32)))
+test_loader = torch.utils.data.DataLoader(
+    test_dataset, shuffle=False, batch_size=opt.batchSize, num_workers=int(opt.workers),
+    collate_fn=dataset.alignCollate(imgH=opt.imgH, imgW=opt.imgW, keep_ratio=True))
 
 alphabet_str = utils.generate_alphabet(opt.alphabet)
 nclass = len(opt.alphabet) + 1
@@ -153,28 +156,25 @@ else:
     optimizer = optim.RMSprop(crnn.parameters(), lr=opt.lr)
 
 
-def val(net, val_dataset, criterion, max_iter=100):
+def val(net, test_loader, criterion, max_iter=100):
     print('Start val')
 
     for p in crnn.parameters():
         p.requires_grad = False
 
     net.eval()
-    data_loader = torch.utils.data.DataLoader(
-        val_dataset, shuffle=False, batch_size=opt.batchSize, num_workers=int(opt.workers),
-        collate_fn=dataset.alignCollate(imgH=opt.imgH, imgW=opt.imgW, keep_ratio=True))
 
+    val_iter = iter(test_loader)
 
-    val_iter = iter(data_loader)
-
-    i = 0
+    # i = 0
     n_correct = 0
     loss_avg = utils.averager()
 
-    max_iter = min(max_iter, len(data_loader))
-    for i in range(max_iter):
-        data = val_iter.next()
-        i += 1
+    # max_iter = min(max_iter, len(test_loader))
+    # for i in range(max_iter):
+    for data in test_loader:
+        # data = val_iter.next()
+        # i += 1
         cpu_images, cpu_texts = data
         batch_size = cpu_images.size(0)
         utils.loadData(image, cpu_images)
@@ -199,8 +199,8 @@ def val(net, val_dataset, criterion, max_iter=100):
     # for raw_pred, pred, gt in zip(raw_preds, sim_preds, cpu_texts):
     #     print('%-20s => %-20s, gt: %-20s' % (raw_pred, pred, gt))
 
-    accuracy = n_correct / float(len(val_dataset))
-    val_output_str = 'Test loss: %f, accuray: %f \n' % (loss_avg.val(), accuracy)
+    accuracy = n_correct / float(val_num)
+    val_output_str = 'Test loss: %f, correct/total:%d / %d accuray: %f ' % (loss_avg.val(), n_correct,val_num,accuracy)
     # print(val_output_str)
     log.write(val_output_str)
     log.write("\n")
