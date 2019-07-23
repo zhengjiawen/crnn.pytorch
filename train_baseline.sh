@@ -11,3 +11,4 @@ python train.py \
 	--adadelta  \
 	--alphabet ./CST_alphabet.txt \
 	--random_sample
+	--adam

@@ -199,7 +199,7 @@ def val(net, dataset, criterion, max_iter=100):
     #     print('%-20s => %-20s, gt: %-20s' % (raw_pred, pred, gt))
 
     accuracy = n_correct / float(len(dataset))
-    val_output_str = 'Test loss: %f, accuray: %f' % (loss_avg.val(), accuracy)
+    val_output_str = 'Test loss: %f, accuray: %f \n' % (loss_avg.val(), accuracy)
     # print(val_output_str)
     log.write(val_output_str)
     return [loss_avg.val(), accuracy]
@@ -246,7 +246,7 @@ for epoch in range(opt.nepoch):
 
         if i % opt.displayInterval == 0:
             iter_time_end = time.time()
-            output_log = 'Epoch: [%d/%d]; iter: [%d/%d]; Loss: %f; time: %.2f s; lr: %s' % (epoch, opt.nepoch, i, len(train_loader), loss_avg.val(), iter_time_end-iter_time_start,  utils.get_learning_rate(optimizer))
+            output_log = 'Epoch: [%d/%d]; iter: [%d/%d]; Loss: %f; time: %.2f s; lr: %s \n' % (epoch, opt.nepoch, i, len(train_loader), loss_avg.val(), iter_time_end-iter_time_start,  utils.get_learning_rate(optimizer))
             # print(output_log)
             log.write(output_log)
             iter_time_start = time.time()
@@ -276,7 +276,7 @@ for epoch in range(opt.nepoch):
         crnn.state_dict(), '{0}/CRNN_ep{1}_acc{2}.pth'.format(opt.expr_dir, epoch, temp_val_acc))
 
     epoch_time_end = time.time()
-    epoch_output_log =  'Epoch: [%d/%d]; Total Loss: %f; time: %.2f s; ' \
+    epoch_output_log =  'Epoch: [%d/%d]; Total Loss: %f; time: %.2f s; \n' \
                         % (epoch, opt.nepoch,  loss_avg.val(), epoch_time_end-epoch_time_start)
     # print(epoch_output_log)
     log.write(epoch_output_log)
