@@ -1,4 +1,4 @@
-GPU=1,2,3,4
+GPU=1,2
 CUDA_VISIBLE_DEVICES=${GPU} \
 python train.py \
 	--trainRoot /data/home/zjw/dataset/AI+_Chinese_Scene_Text/lmdb/ \
