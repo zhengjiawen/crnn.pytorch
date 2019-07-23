@@ -29,7 +29,8 @@ class lmdbDataset(Dataset):
             sys.exit(0)
 
         with self.env.begin(write=False) as txn:
-            nSamples = int(txn.get('num-samples'))
+            nSamples = int(txn.get('num-samples'.encode('utf-8')))
+            # print("nSamples:", nSamples)
             self.nSamples = nSamples
 
         self.transform = transform
@@ -43,7 +44,11 @@ class lmdbDataset(Dataset):
         index += 1
         with self.env.begin(write=False) as txn:
             img_key = 'image-%09d' % index
-            imgbuf = txn.get(img_key)
+            imgbuf = txn.get(img_key.encode('utf-8'))
+
+            if imgbuf is None:
+                print("{} is none.".format(img_key))
+                return self[index + 1]
 
             buf = six.BytesIO()
             buf.write(imgbuf)
@@ -58,7 +63,8 @@ class lmdbDataset(Dataset):
                 img = self.transform(img)
 
             label_key = 'label-%09d' % index
-            label = str(txn.get(label_key))
+            # label = str(txn.get(label_key.encode()), encoding='utf-8')
+            label = str(txn.get(label_key.encode('utf-8')).decode('utf-8'))
 
             if self.target_transform is not None:
                 label = self.target_transform(label)

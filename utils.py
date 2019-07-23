@@ -5,6 +5,7 @@ import torch
 import torch.nn as nn
 from torch.autograd import Variable
 import collections
+import sys
 
 
 class strLabelConverter(object):
@@ -40,10 +41,15 @@ class strLabelConverter(object):
             torch.IntTensor [n]: length of each text.
         """
         if isinstance(text, str):
-            text = [
-                self.dict[char.lower() if self._ignore_case else char]
-                for char in text
-            ]
+            temp = text
+            try:
+                text = [
+                    self.dict[char.lower() if self._ignore_case else char]
+                    for char in text
+                ]
+            except KeyError:
+                print("text: ", temp)
+                raise RuntimeError("key error")
             length = [len(text)]
         elif isinstance(text, collections.Iterable):
             length = [len(s) for s in text]
@@ -147,3 +153,58 @@ def assureRatio(img):
         main = nn.UpsamplingBilinear2d(size=(h, h), scale_factor=None)
         img = main(img)
     return img
+
+def generate_alphabet(path, sep = ''):
+    '''
+    生成中文词库
+    :param path:
+    :return: alphabet string: A;B;c
+    '''
+    alphabet_list = []
+    with open(path, 'r') as f:
+        lines = f.readlines()
+        for line in lines:
+            alphabet_list.append(line.strip())
+
+        alphabet = sep.join(alphabet_list[i] for i in range(len(alphabet_list)))
+
+    return alphabet
+
+
+# print logger
+class Logger(object):
+    def __init__(self):
+        self.terminal = sys.stdout  # stdout
+        self.file = None
+
+    def open(self, file, mode=None):
+        if mode is None: mode = 'w'
+        self.file = open(file, mode)
+
+    def write(self, message, is_terminal=1, is_file=1):
+        if '\r' in message: is_file = 0
+
+        if is_terminal == 1:
+            self.terminal.write(message)
+            self.terminal.flush()
+            # time.sleep(1)
+
+        if is_file == 1:
+            self.file.write(message)
+            self.file.flush()
+
+    def flush(self):
+        # this flush method is needed for python 3 compatibility.
+        # this handles the flush command by doing nothing.
+        # you might want to specify some extra behavior here.
+        pass
+
+def get_learning_rate(optimizer):
+    lr = []
+    for param_group in optimizer.param_groups:
+        lr += [param_group['lr']]
+
+    # assert(len(lr)==1) #we support only one param_group
+    lr = lr[0]
+
+    return lr
