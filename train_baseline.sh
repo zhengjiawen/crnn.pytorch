@@ -9,6 +9,5 @@ python train.py \
 	--expr_dir output/baselineep100_lr0.1_rlop/ \
 	--displayInterval 100 \
 	--adadelta  \
-	--BidirDecoder \
-	--alphabet ./CST_alphabet.txt
+	--alphabet ./CST_alphabet.txt \
 	--random_sample
