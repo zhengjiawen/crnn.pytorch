@@ -199,7 +199,7 @@ def val(net, val_dataset, criterion, max_iter=100):
     # for raw_pred, pred, gt in zip(raw_preds, sim_preds, cpu_texts):
     #     print('%-20s => %-20s, gt: %-20s' % (raw_pred, pred, gt))
 
-    accuracy = n_correct / float(len(dataset))
+    accuracy = n_correct / float(len(val_dataset))
     val_output_str = 'Test loss: %f, accuray: %f \n' % (loss_avg.val(), accuracy)
     # print(val_output_str)
     log.write(val_output_str)
