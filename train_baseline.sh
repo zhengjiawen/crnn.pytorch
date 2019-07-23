@@ -1,7 +1,7 @@
 GPU=1,2,3,4
 CUDA_VISIBLE_DEVICES=${GPU} \
 python train.py \
-	--trainRoot /youedata/dengjinhong/zjw/dataset/AI+_Chinese_Scene_Text/lmdb/ \
+	--trainRoot /data/home/zjw/dataset/AI+_Chinese_Scene_Text/lmdb/ \
 	--workers 2 \
 	--batchSize 64 \
 	--nepoch 100 \
