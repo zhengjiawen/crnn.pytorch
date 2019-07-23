@@ -49,6 +49,7 @@ parser.add_argument('--random_sample', action='store_true',default=True, help='w
 opt = parser.parse_args()
 print(opt)
 
+debug = True
 train_num, val_num = 192023, 20000
 
 # log config
@@ -212,6 +213,11 @@ def trainBatch(net, criterion, optimizer):
     utils.loadData(length, l)
 
     preds = net(image)
+    if debug:
+        print('batch size:', batch_size)
+        print('len data:', len(data))
+        print('pred size:', preds.size())
+        print('cpu image size:', cpu_images.size())
     preds_size = Variable(torch.IntTensor([preds.size(0)] * batch_size))
     cost = criterion(preds, text, preds_size, length) / batch_size
     net.zero_grad()
