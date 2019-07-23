@@ -74,8 +74,8 @@ torch.cuda.manual_seed_all(opt.manualSeed)
 
 cudnn.benchmark = True
 
-if torch.cuda.is_available() and not opt.cuda:
-    print("WARNING: You have a CUDA device, so you should probably run with --cuda")
+# if torch.cuda.is_available() and not opt.cuda:
+#     print("WARNING: You have a CUDA device, so you should probably run with --cuda")
 
 train_ = dataset.lmdbDataset(root=opt.trainRoot)
 train_dataset, test_dataset = torch.utils.data.random_split(train_, [train_num, val_num])
