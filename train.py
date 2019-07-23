@@ -161,7 +161,9 @@ def val(net, dataset, criterion, max_iter=100):
 
     net.eval()
     data_loader = torch.utils.data.DataLoader(
-        dataset, shuffle=True, batch_size=opt.batchSize, num_workers=int(opt.workers))
+        dataset, shuffle=False, batch_size=opt.batchSize, num_workers=int(opt.workers),
+        collate_fn=dataset.alignCollate(imgH=opt.imgH, imgW=opt.imgW, keep_ratio=True) )
+
     val_iter = iter(data_loader)
 
     i = 0
@@ -198,7 +200,7 @@ def val(net, dataset, criterion, max_iter=100):
 
     accuracy = n_correct / float(len(dataset))
     val_output_str = 'Test loss: %f, accuray: %f' % (loss_avg.val(), accuracy)
-    print(val_output_str)
+    # print(val_output_str)
     log.write(val_output_str)
     return [loss_avg.val(), accuracy]
 
@@ -245,7 +247,7 @@ for epoch in range(opt.nepoch):
         if i % opt.displayInterval == 0:
             iter_time_end = time.time()
             output_log = 'Epoch: [%d/%d]; iter: [%d/%d]; Loss: %f; time: %.2f s; lr: %s' % (epoch, opt.nepoch, i, len(train_loader), loss_avg.val(), iter_time_end-iter_time_start,  utils.get_learning_rate(optimizer))
-            print(output_log)
+            # print(output_log)
             log.write(output_log)
             iter_time_start = time.time()
             loss_avg.reset()
@@ -276,7 +278,7 @@ for epoch in range(opt.nepoch):
     epoch_time_end = time.time()
     epoch_output_log =  'Epoch: [%d/%d]; Total Loss: %f; time: %.2f s; ' \
                         % (epoch, opt.nepoch,  loss_avg.val(), epoch_time_end-epoch_time_start)
-    print(epoch_output_log)
+    # print(epoch_output_log)
     log.write(epoch_output_log)
 
     # 每个epoch的loss都reset
