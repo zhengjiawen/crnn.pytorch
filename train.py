@@ -11,7 +11,7 @@ import torch.optim as optim
 import torch.utils.data
 from torch.autograd import Variable
 import numpy as np
-from warpctc_pytorch import CTCLoss
+# from warpctc_pytorch import CTCLoss
 import os
 import utils
 import dataset
@@ -98,7 +98,8 @@ nclass = len(opt.alphabet) + 1
 nc = 1
 
 converter = utils.strLabelConverter(alphabet_str)
-criterion = CTCLoss()
+# criterion = CTCLoss()
+criterion = nn.CTCLoss()
 
 
 # custom weights initialization called on crnn
