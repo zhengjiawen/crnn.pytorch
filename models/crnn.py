@@ -6,11 +6,11 @@ class BidirectionalLSTM(nn.Module):
     def __init__(self, nIn, nHidden, nOut):
         super(BidirectionalLSTM, self).__init__()
 
-        self.rnn = nn.LSTM(nIn, nHidden, bidirectional=True)
+        self.rnn = nn.LSTM(nIn, nHidden, bidirectional=True, batch_first = True)
         self.embedding = nn.Linear(nHidden * 2, nOut)
 
     def forward(self, input):
-        self.rnn.flatten_parameters()
+        # self.rnn.flatten_parameters()
         recurrent, _ = self.rnn(input)
         T, b, h = recurrent.size()
         t_rec = recurrent.view(T * b, h)
@@ -73,7 +73,6 @@ class CRNN(nn.Module):
         assert h == 1, "the height of conv must be 1"
         conv = conv.squeeze(2)
         conv = conv.permute(2, 0, 1)  # [w, b, c]
-
         # rnn features
         output = self.rnn(conv)
 
