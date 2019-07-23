@@ -118,7 +118,7 @@ if opt.pretrained != '':
     crnn.load_state_dict(torch.load(opt.pretrained))
 print(crnn)
 
-image = torch.FloatTensor(opt.batchSize, 3, opt.imgH, opt.imgH)
+image = torch.FloatTensor(opt.batchSize, 3, opt.imgH, opt.imgW)
 text = torch.IntTensor(opt.batchSize * 5)
 length = torch.IntTensor(opt.batchSize)
 
@@ -132,6 +132,10 @@ criterion = criterion.to(device)
 image = image.to(device)
 text = text.to(device)
 length = length.to(device)
+
+image = Variable(image)
+text = Variable(text)
+length = Variable(length)
 
 # loss averager
 loss_avg = utils.averager()
