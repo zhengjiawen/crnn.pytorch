@@ -93,10 +93,11 @@ train_loader = torch.utils.data.DataLoader(
 # test_dataset = dataset.lmdbDataset(
 #     root=opt.valRoot, transform=dataset.resizeNormalize((100, 32)))
 
+alphabet_str = utils.generate_alphabet(opt.alphabet)
 nclass = len(opt.alphabet) + 1
 nc = 1
 
-converter = utils.strLabelConverter(opt.alphabet)
+converter = utils.strLabelConverter(alphabet_str)
 criterion = CTCLoss()
 
 
