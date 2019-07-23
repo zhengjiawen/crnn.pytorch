@@ -131,8 +131,8 @@ image = image.to(device)
 criterion = criterion.to(device)
 
 image = image.to(device)
-text = text.to(device)
-length = length.to(device)
+# text = text.to(device)
+# length = length.to(device)
 
 image = Variable(image)
 text = Variable(text)
@@ -211,7 +211,7 @@ def trainBatch(net, criterion, optimizer):
     utils.loadData(text, t)
     utils.loadData(length, l)
 
-    preds = crnn(image).to(device)
+    preds = crnn(image)
     preds_size = Variable(torch.IntTensor([preds.size(0)] * batch_size)).to(device)
     cost = criterion(preds, text, preds_size, length) / batch_size
     crnn.zero_grad()
