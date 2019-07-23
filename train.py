@@ -256,13 +256,13 @@ for epoch in range(opt.nepoch):
             iter_time_start = time.time()
             loss_avg.reset()
 
-        if i % opt.valInterval == 0:
-            val_metric = val(crnn, test_dataset, criterion)
-            if val_metric[1] > temp_val_acc:
-                temp_val_acc = val_metric[1]
-                best_model = crnn.state_dict()
-                torch.save(
-                    crnn.state_dict(), '{0}/CRNN_ep{1}_it{2}_acc{3}.pth'.format(opt.expr_dir, epoch, i, temp_val_acc))
+        # if i % opt.valInterval == 0:
+        #     val_metric = val(crnn, test_dataset, criterion)
+        #     if val_metric[1] > temp_val_acc:
+        #         temp_val_acc = val_metric[1]
+        #         best_model = crnn.state_dict()
+        #         torch.save(
+        #             crnn.state_dict(), '{0}/CRNN_ep{1}_it{2}_acc{3}.pth'.format(opt.expr_dir, epoch, i, temp_val_acc))
 
         # # do checkpointing
         # if i % opt.saveInterval == 0:
