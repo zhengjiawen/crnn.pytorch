@@ -10,5 +10,5 @@ python train.py \
 	--displayInterval 100 \
 	--adadelta  \
 	--alphabet ./CST_alphabet.txt \
-	--random_sample
+	--random_sample \
 	--adam
