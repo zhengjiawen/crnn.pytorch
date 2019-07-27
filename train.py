@@ -87,14 +87,14 @@ if not opt.random_sample:
 else:
     sampler = None
 train_loader = torch.utils.data.DataLoader(
-    train_dataset, batch_size=opt.batchSize,
+    train_dataset, batch_size=opt.batchSize,drop_last=True,
     shuffle=True, sampler=sampler,
     num_workers=int(opt.workers),
     collate_fn=dataset.alignCollate(imgH=opt.imgH, imgW=opt.imgW, keep_ratio=opt.keep_ratio))
 # test_dataset = dataset.lmdbDataset(
 #     root=opt.valRoot, transform=dataset.resizeNormalize((100, 32)))
 test_loader = torch.utils.data.DataLoader(
-    test_dataset, shuffle=False, batch_size=opt.batchSize, num_workers=int(opt.workers),
+    test_dataset, shuffle=False, batch_size=opt.batchSize, num_workers=int(opt.workers),drop_last=True,
     collate_fn=dataset.alignCollate(imgH=opt.imgH, imgW=opt.imgW, keep_ratio=True))
 
 alphabet_str = utils.generate_alphabet(opt.alphabet)
