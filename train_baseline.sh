@@ -5,7 +5,7 @@ python train.py \
 	--workers 2 \
 	--batchSize 64 \
 	--nepoch 100 \
-	--lr 0.1 \
+	--lr 0.001 \
 	--expr_dir output/baselineep100_lr0.1_rlop/ \
 	--displayInterval 200 \
 	--adadelta  \
