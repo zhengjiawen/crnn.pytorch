@@ -269,7 +269,7 @@ for epoch in range(opt.nepoch):
         #     torch.save(
         #         crnn.state_dict(), '{0}/CRNN_ep{1}_it{2}.pth'.format(opt.expr_dir, epoch, i))
 
-    val_metric = val(crnn, test_dataset, criterion)
+    val_metric = val(crnn, test_loader, criterion)
     if val_metric[1] > temp_val_acc:
         temp_val_acc = val_metric[1]
         best_model = crnn.state_dict()
