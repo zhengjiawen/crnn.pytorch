@@ -17,6 +17,8 @@ import utils
 import dataset
 import time
 from torch.optim import lr_scheduler
+from warmup_scheduler import GradualWarmupScheduler
+
 
 import models.crnn as crnn
 
@@ -227,7 +229,8 @@ def trainBatch(net, criterion, optimizer):
     return cost
 
 # scheduler = lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', patience=4, factor=0.1)
-scheduler = optim.lr_scheduler.MultiStepLR(optimizer, milestones=[40,80], gamma=0.1)
+scheduler_ms = optim.lr_scheduler.MultiStepLR(optimizer, milestones=[40,80], gamma=0.1)
+scheduler = GradualWarmupScheduler(optimizer, multiplier=0.001, total_epoch=5, after_scheduler=scheduler_ms)
 total_time_start = time.time()
 iter_time_start = time.time()
 epoch_time_start = time.time()
@@ -236,6 +239,8 @@ temp_val_acc = 0
 best_model = crnn.state_dict()
 
 for epoch in range(opt.nepoch):
+    scheduler.step()
+
     train_iter = iter(train_loader)
     i = 0
     while i < len(train_loader):
@@ -276,7 +281,6 @@ for epoch in range(opt.nepoch):
     #     best_model = crnn.state_dict()
     # scheduler acc
     # scheduler.step(val_metric[1])
-    scheduler.step()
 
     torch.save(
         crnn.state_dict(), '{0}/CRNN_ep{1}_acc{2}.pth'.format(opt.expr_dir, epoch, temp_val_acc))
