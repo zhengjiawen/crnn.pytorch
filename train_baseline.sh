@@ -12,4 +12,4 @@ python train.py \
 	--alphabet ./CST_alphabet.txt \
 	--random_sample \
 	--adam \
-	--valInterval 1000
+	--valInterval 24000
